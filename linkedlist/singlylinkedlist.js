@@ -11,11 +11,11 @@ class SinglyLinkedList {
         this.length = 0;
     }
 
-    isEmpty() {
+    isEmpty() { // O(1)
         return this.length === 0;
     }
 
-    printList() {
+    printList() { // O(n)
         let curr = this.head;
         let list = "";
         while(curr) {
@@ -27,7 +27,10 @@ class SinglyLinkedList {
         console.log("Length of Linked List: " + this.length);
     }
 
-    insertAtEnd(data) {
+    // NOTE:: in insert and delete operation, we assume that the pointer is already pointing at
+    // the required index for the operation. Unlike arrays - O(n), we have to shift the elements 
+    // for insertion and deletion. Hence, O(1) in Linked Lists.
+    insertAtEnd(data) {  // O(1)
         let node = new Node(data);
         
         if(this.isEmpty()) {
@@ -43,7 +46,7 @@ class SinglyLinkedList {
         this.length++;
     }
 
-    deleteAtEnd() {
+    deleteAtEnd() { // O(1)
         if(this.isEmpty()) {
             console.log("Error: Invalid Operation - List Empty");
         } else {
@@ -61,7 +64,7 @@ class SinglyLinkedList {
         }
     }
 
-    insert(data, index) {
+    insert(data, index) {  // O(1)
         let node = new Node(data);
         if(index == 0) {
             node.next = this.head;
@@ -82,7 +85,7 @@ class SinglyLinkedList {
         this.length++;
     }
 
-    delete(index) {
+    delete(index) { // O(1)
         if(this.isEmpty()) {
             console.log("Error: Invalid Operation - List Empty");
         }
