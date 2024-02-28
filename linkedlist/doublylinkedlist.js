@@ -76,16 +76,19 @@ class DoublyLinkedList {
         if(this.isEmpty()) {
             console.log("Error: Invalid Operation - List Empty");
         }
-
+        let del = null;
         if(this.length == 1) {
+            del = this.head;
             this.head = null;
         } else {
+            del = this.tail;
             this.tail = this.tail.prev;
             this.tail.next.prev = null;
             this.tail.next = null;
         }
 
         this.length--;
+        return del;
     }
     
     insert(data, index) { // O(1)
@@ -122,7 +125,10 @@ class DoublyLinkedList {
         }
 
         let curr = this.head;
+        let del = null;
+
         if(index == 0) {
+            del = this.head;
             this.head = this.head.next;
             this.head.prev = null;
             curr.next = null;
@@ -131,6 +137,7 @@ class DoublyLinkedList {
                 curr = curr.next;
             }
 
+            del = curr;
             curr.prev.next = curr.next;
             curr.next.prev = curr.prev;
             curr.next = null;
@@ -138,25 +145,8 @@ class DoublyLinkedList {
         }
 
         this.length--;
+        return del;
     }
 }
 
-let dl = new DoublyLinkedList();
-
-dl.insertAtEnd(10);
-dl.insertAtEnd(20);
-dl.insertAtEnd(30);
-dl.insertAtEnd(40);
-dl.insertAtEnd(50);
-dl.printList();
-
-dl.deleteAtEnd();
-dl.printList();
-
-dl.insert(35, 3);
-dl.printList();
-dl.printListReverse();
-
-dl.delete(3);
-dl.printList();
-dl.printListReverse();
+module.exports = DoublyLinkedList;

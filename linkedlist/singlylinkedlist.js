@@ -8,6 +8,7 @@ class Node {
 class SinglyLinkedList {
     constructor() {
         this.head = null;
+        this.tail = null;
         this.length = 0;
     }
 
@@ -35,12 +36,14 @@ class SinglyLinkedList {
         
         if(this.isEmpty()) {
             this.head = node;
+            this.tail = node;
         } else {
             let curr = this.head;
             while(curr.next) {
                 curr = curr.next;
             }
             curr.next = node;
+            this.tail = node;
         }
 
         this.length++;
@@ -51,16 +54,20 @@ class SinglyLinkedList {
             console.log("Error: Invalid Operation - List Empty");
         } else {
             let curr = this.head;
+            let del = null;
             if(this.head.next == null) {
                 this.head = null;
             } else {
                 while(curr.next.next != null) {
                     curr = curr.next;
                 }
+                del = curr.next;
                 curr.next = null;
+                this.tail = curr;
             }
 
             this.length--;
+            return del;
         }
     }
 
@@ -80,6 +87,7 @@ class SinglyLinkedList {
 
             node.next = curr.next;
             curr.next = node;
+            this.tail = node;
         }
 
         this.length++;
@@ -89,10 +97,12 @@ class SinglyLinkedList {
         if(this.isEmpty()) {
             console.log("Error: Invalid Operation - List Empty");
         }
+        let del = null;
         if(index == 0) {
             let curr = this.head;
             this.head = this.head.next;
             curr.next = null;
+            del = curr;
         } else {
             if(index >= this.length-1) {
                 this.deleteAtEnd();
@@ -105,34 +115,12 @@ class SinglyLinkedList {
             let ptr = curr.next;
             curr.next = curr.next.next;
             ptr.next = null;
+            this.tail = curr;
+            del = ptr;
         }
         this.length--;
+        return del;
     }
 }
 
-let ll = new SinglyLinkedList();
-ll.insertAtEnd(10);
-ll.insertAtEnd(20);
-ll.insertAtEnd(30);
-ll.insertAtEnd(40);
-ll.insertAtEnd(50);
-ll.printList();
-
-ll.deleteAtEnd();
-ll.printList();
-
-ll.insert(45, 4);
-ll.insert(65, 10);
-ll.insert(95, 0);
-ll.insert(35, 3);
-ll.printList();
-
-ll.delete(2);
-ll.delete(6);
-ll.delete(4);
-ll.delete(0);
-ll.printList();
-
-
-
-
+module.exports = SinglyLinkedList;
