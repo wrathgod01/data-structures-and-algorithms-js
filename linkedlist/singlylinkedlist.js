@@ -16,7 +16,7 @@ class SinglyLinkedList {
         return this.length === 0;
     }
 
-    printList() { // O(n)
+    printList(listName = "Linked List") { // O(n)
         let curr = this.head;
         let list = "";
         while(curr) {
@@ -25,7 +25,7 @@ class SinglyLinkedList {
         }
         list += this.length != 0 ? "null": "EMPTY LIST";
         console.log(list);
-        console.log("Length of Linked List: " + this.length);
+        console.log("Length of " + listName + " : " + this.length);
     }
 
     // NOTE:: in insert and delete operation, we assume that the pointer is already pointing at

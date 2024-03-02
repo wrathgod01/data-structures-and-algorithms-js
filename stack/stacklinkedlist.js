@@ -22,7 +22,7 @@ class StackLinkedList {
     }
 
     printStack() {
-        this.stack.printList();
+        this.stack.printList("Stack");
     }
 }
 

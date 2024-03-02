@@ -17,11 +17,11 @@ class DoublyLinkedList {
         return this.length === 0;
     }
 
-    printList() { // O(n)
+    printList(listName = "Linked List") { // O(n)
         let curr = this.head;
         if(!this.length) {
             console.log("EMPTY LIST");
-            console.log("Length of Linked List: " + this.length);
+            console.log("Length of " + listName + " : " + this.length);
             return;
         } 
         
@@ -33,14 +33,14 @@ class DoublyLinkedList {
         }
         list += curr.data + " -> null";
         console.log("List: " + list);
-        console.log("Length of Linked List: " + this.length);
+        console.log("Length of " + listName + " : " + this.length);
     }
 
-    printListReverse() {  // O(n)
+    printListReverse(listName = "Linked List") {  // O(n)
         let curr = this.tail;
         if(!this.length) {
             console.log("EMPTY LIST");
-            console.log("Length of Linked List: " + this.length);
+            console.log("Length of " + listName + " : " + this.length);
             return;
         } 
         
@@ -52,7 +52,7 @@ class DoublyLinkedList {
         }
         list += curr.data + " -> null";
         console.log("Reverse List: " + list);
-        console.log("Length of Linked List: " + this.length);
+        console.log("Length of " + listName + " : " + this.length);
     }
 
     insertAtEnd(data) {  // O(1)
