@@ -13,139 +13,201 @@ class DoublyLinkedList {
         this.length = 0;
     }
 
-    isEmpty() { // O(1)
-        return this.length === 0;
+    size() {
+        return this.length;
     }
 
-    printList(listName = "Linked List") { // O(n)
-        let curr = this.head;
-        if(!this.length) {
-            console.log("EMPTY LIST");
-            console.log("Length of " + listName + " : " + this.length);
-            return;
-        } 
-        
-        let list = "";
-        list += "null <- ";
-        while(curr.next) {
-            list += curr.data + " <-> ";
-            curr = curr.next;
-        }
-        list += curr.data + " -> null";
-        console.log("List: " + list);
-        console.log("Length of " + listName + " : " + this.length);
+    isEmpty() {
+        return this.size() === 0;
     }
 
-    printListReverse(listName = "Linked List") {  // O(n)
-        let curr = this.tail;
-        if(!this.length) {
-            console.log("EMPTY LIST");
-            console.log("Length of " + listName + " : " + this.length);
-            return;
-        } 
-        
-        let list = "";
-        list += "null <- ";
-        while(curr.prev) {
-            list += curr.data + " <-> ";
-            curr = curr.prev;
-        }
-        list += curr.data + " -> null";
-        console.log("Reverse List: " + list);
-        console.log("Length of " + listName + " : " + this.length);
-    }
-
-    insertAtEnd(data) {  // O(1)
+    push(data) {
         let node = new Node(data);
 
         if(this.isEmpty()) {
             this.head = node;
-            this.tail = node;
-            this.length++;
-            return;
         }
 
-        this.tail.next = node;
         node.prev = this.tail;
+        if(this.tail) {
+            this.tail.next = node;
+        }
         this.tail = node;
-
         this.length++;
     }
 
-    deleteAtEnd() { // O(1)
+    pop() {
         if(this.isEmpty()) {
-            console.log("Error: Invalid Operation - List Empty");
-        }
-        let del = null;
-        if(this.length == 1) {
-            del = this.head;
-            this.head = null;
-        } else {
-            del = this.tail;
-            this.tail = this.tail.prev;
-            this.tail.next.prev = null;
-            this.tail.next = null;
+            return undefined;
         }
 
+        let node = this.tail;
+        this.tail = this.tail.prev;
+        if(this.tail) {
+            this.tail.next = null;
+        }
+        node.prev = null;
         this.length--;
-        return del;
+
+        return node.data;
     }
-    
-    insert(data, index) { // O(1)
-        if(index >= this.length) {
-            this.insertAtEnd(data);
-            return;   
+
+    shift() {
+        if(this.isEmpty()) {
+            return undefined;
         }
+
+        let node = this.head;
+        this.head = this.head.next;
+        if(this.head) {
+            this.head.prev = null;
+        }
+        node.next = null;
+        this.length--;
+
+        return node.data;
+    }
+
+    unshift(data) {
         let node = new Node(data);
-        
-        if(index == 0) {
-            node.next = this.head;
-            this.head.prev = node;
-            this.head = node;
-        } else {
-            let curr = this.head;
-            for(let i = 0; i < (index-1); i++) {
-                curr = curr.next;
-            }
-            node.next = curr.next;
-            curr.next = node;
-            node.prev = curr;
-            node.next.prev = node;
+        if(this.isEmpty()) {
+            this.tail = node;
         }
+
+        node.next = this.head;
+        if(this.head) {
+            this.head.prev = node;
+        }
+        this.head = node;
+        this.length++;
+    }
+
+    valueAt(index) {
+        if(index >= this.size()) {
+            return undefined;
+        }
+
+        let curr = this.head;
+
+        for(let i = 0; i < index; i++) {
+            curr = curr.next;
+        }
+
+        return curr.data;
+    }
+
+    search(data) {
+        let curr = this.head;
+        let index = 0;
+        while(curr !== null) {
+            if(curr.data === data) {
+                return index;
+            }
+            curr = curr.next;
+            index++;
+        }
+
+        return -1;
+    }
+
+    insert(data, index) {
+        if(index > this.size()) {
+            console.log("Invalid insert index passed", index);
+            return;
+        }
+
+        if(index == 0) {
+            this.unshift(data);
+            return;
+        }
+
+        if(index == this.size()) {
+            this.push(data);
+            return;
+        }
+
+        let curr = this.head;
+        for(let i = 0; i < index-1; i++) {
+            curr = curr.next;
+        }
+
+        let node = new Node(data);
+        node.next = curr.next;
+        node.prev = curr;
+        curr.next.prev = node;
+        curr.next = node;
         this.length++;
     }
 
     delete(index) {
-        if(this.isEmpty()) {
-            console.log("Error: Invalid Operation - List Empty");
-        }
-        if(index == (this.length-1)) {
-            this.deleteAtEnd();
+        if(index > this.size()) {
+            console.log("Invalid delete index passed", index);
             return;
         }
 
-        let curr = this.head;
-        let del = null;
-
         if(index == 0) {
-            del = this.head;
-            this.head = this.head.next;
-            this.head.prev = null;
-            curr.next = null;
-        } else {
-            for(let i = 0; i < index; i++) {
-                curr = curr.next;
-            }
-
-            del = curr;
-            curr.prev.next = curr.next;
-            curr.next.prev = curr.prev;
-            curr.next = null;
-            curr.prev = null;
+            return this.shift();
         }
 
+        if(index == this.size()) {
+            return this.pop();
+        }
+
+        let curr = this.head;
+        for(let i = 0; i < index-1; i++) {
+            curr = curr.next;
+        }
+
+        let node = curr.next;
+        curr.next = node.next;
+        node.next.prev = curr;
+        node.next = null;
+        node.prev = null;
         this.length--;
-        return del;
+
+        return node.data;
+    }
+
+    removeVal(data) {
+        let index = this.search(data);
+        if(index === -1) {
+            console.log("No such value exists");
+            return undefined;
+        }
+
+        return this.delete(index);
+    }
+
+    print(direction = "forward") {
+        let list = "";
+        if(this.isEmpty()) {
+            console.log(list);
+            console.log("Size: ", this.size());
+            return;
+        }
+
+        list = "null<-";
+        let curr = this.head;
+        switch(direction) {
+            case 'forward':
+                while(curr.next) {
+                    list += (curr.data + "<->");
+                    curr = curr.next;
+                }
+                break;
+            case 'backward':
+                curr = this.tail;
+                while(curr.prev) {
+                    list += (curr.data + "<->");
+                    curr = curr.prev;
+                }
+                break;
+        }
+
+        list += (curr.data+"->null");
+
+        console.log(list);
+        console.log("Size: ", this.size());
     }
 }
 

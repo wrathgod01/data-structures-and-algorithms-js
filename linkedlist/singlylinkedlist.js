@@ -12,114 +12,198 @@ class SinglyLinkedList {
         this.length = 0;
     }
 
-    isEmpty() { // O(1)
-        return this.length === 0;
+    size() {
+        return this.length;
     }
 
-    printList(listName = "Linked List") { // O(n)
-        let curr = this.head;
-        let list = "";
-        while(curr) {
-            list += curr.data + " -> ";
-            curr = curr.next;
-        }
-        list += this.length != 0 ? "null": "EMPTY LIST";
-        console.log(list);
-        console.log("Length of " + listName + " : " + this.length);
+    isEmpty() {
+        return this.size() === 0;
     }
 
-    // NOTE:: in insert and delete operation, we assume that the pointer is already pointing at
-    // the required index for the operation. Unlike arrays - O(n), we have to shift the elements 
-    // for insertion and deletion. Hence, O(1) in Linked Lists.
-    insertAtEnd(data) {  // O(1)
+    push(data) {
         let node = new Node(data);
         
         if(this.isEmpty()) {
             this.head = node;
-            this.tail = node;
-        } else {
-            let curr = this.head;
-            while(curr.next) {
-                curr = curr.next;
-            }
-            curr.next = node;
-            this.tail = node;
         }
-
+        
+        if(this.tail) {
+            this.tail.next = node;
+        }
+        
+        this.tail = node;
         this.length++;
     }
 
-    deleteAtEnd() { // O(1)
+    pop() {
         if(this.isEmpty()) {
-            console.log("Error: Invalid Operation - List Empty");
-        } else {
-            let curr = this.head;
-            let del = null;
-            if(this.head.next == null) {
-                this.head = null;
-            } else {
-                while(curr.next.next != null) {
-                    curr = curr.next;
-                }
-                del = curr.next;
-                curr.next = null;
-                this.tail = curr;
-            }
-
-            this.length--;
-            return del;
+            return undefined;
         }
-    }
+        
+        let node = this.tail;
+        let curr = this.head;
+        let prev = this.head;
 
-    insert(data, index) {  // O(1)
-        let node = new Node(data);
-        if(index == 0) {
-            node.next = this.head;
-            this.head = node;
-        } else if(index > this.length - 1) {
-            this.insertAtEnd(data);
-            return;
-        } else {
-            let curr = this.head;
-            for(let i = 0; i < (index-1); i++) {
-                curr = curr.next;
-            }
+        while(curr.next) {
+            prev = curr;
+            curr = curr.next;
+        }
+        
+        this.tail = prev;
+        this.tail.next = null;
 
-            node.next = curr.next;
-            curr.next = node;
-            this.tail = node;
+        if(this.size() === 1) {
+            this.head = null;
+            this.tail = null;
         }
 
-        this.length++;
-    }
-
-    delete(index) { // O(1)
-        if(this.isEmpty()) {
-            console.log("Error: Invalid Operation - List Empty");
-        }
-        let del = null;
-        if(index == 0) {
-            let curr = this.head;
-            this.head = this.head.next;
-            curr.next = null;
-            del = curr;
-        } else {
-            if(index >= this.length-1) {
-                this.deleteAtEnd();
-                return;
-            }
-            let curr = this.head;
-            for(let i = 0; i < (index-1); i++) {
-                curr = curr.next;
-            }
-            let ptr = curr.next;
-            curr.next = curr.next.next;
-            ptr.next = null;
-            this.tail = curr;
-            del = ptr;
-        }
         this.length--;
-        return del;
+        
+        return node.data;
+    }
+
+    shift() {
+        if(this.isEmpty()) {
+            return undefined;
+        }
+
+        let node = this.head;
+        this.head = this.head.next;
+        node.next = null;
+
+        if(this.size() === 1) {
+            this.tail = null;
+        }
+
+        this.length--;
+        return node.data;
+    }
+
+    unshift(data) {
+        let node = new Node(data);
+        if(this.isEmpty()) {
+            this.tail = node;
+        }
+
+        node.next = this.head;
+        this.head = node;
+        this.length++;
+    }
+    
+    valueAt(index) {
+        if(index >= this.size()) {
+            return undefined;
+        }
+
+        let curr = this.head;
+
+        for(let i = 0; i < index; i++) {
+            curr = curr.next;
+        }
+
+        return curr.data;
+    }
+
+    insert(data, index) {
+        if((index+1) > this.size()) {
+            console.log("Invalid insert position passed", index);
+            return;
+        }
+
+        if(index == 0) {
+            this.unshift(data);
+            return;
+        }
+
+        if(index == this.size()) {
+            this.push(data);
+            return;
+        }
+
+        let curr = this.head;
+        for(let i = 0; i < (index-1); i++) {
+            curr = curr.next;
+        }
+
+        let node = new Node(data);
+        node.next = curr.next;
+        curr.next = node;
+        this.length++;
+    }
+
+    delete(index) {
+        if(index > this.size()) {
+            console.log("Invalid delete position passed", index);
+            return;
+        }
+
+        if(this.isEmpty()) {
+            return undefined;
+        }
+
+        if(index == 0) {
+            return this.shift();
+        }
+
+        if(index == this.size()-1) {
+            return this.pop();
+        }
+
+        let curr = this.head;
+        for(let i = 0; i < (index-1); i++) {
+            curr = curr.next;
+        }
+
+        let node = curr.next;
+        curr.next = curr.next.next;
+        node.next = null;
+        this.length--;
+
+        return node.data;
+    }
+
+    removeValue(data) {
+        if(this.isEmpty()) {
+            return undefined;
+        }
+
+        let index = this.search(data);
+        if(index === -1) {
+            console.log("No such value exists");
+            return undefined;
+        }
+
+        return this.delete(index);
+    }
+
+    search(data) {
+        let curr = this.head;
+
+        let index = 0;
+        while(curr) {
+            if(curr.data === data) {
+                return index;
+            }
+
+            curr = curr.next;
+            index++;
+        }
+
+        return -1;
+    }
+
+    print() {
+        let curr = this.head;
+        let list = "";
+        while(curr) {
+            list += (curr.data + "->");
+            curr = curr.next;
+        }
+
+        list += "null";
+
+        console.log(list);
+        console.log("Size: ", this.size());
     }
 }
 

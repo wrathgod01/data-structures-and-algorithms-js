@@ -1,28 +1,65 @@
-const SinglyLinkedList = require("../linkedlist/singlylinkedlist");
+class Node {
+    constructor(value) {
+        this.value = value;
+        this.next = null;
+    }
+}
 
 class StackLinkedList {
-    constructor() {
-        this.stack = new SinglyLinkedList();
+    constructor(MAX_SIZE) {
+        this.top = null;
+        this.length = 0;
+        this.MAX_SIZE = MAX_SIZE;
+    }
+
+    size() {
+        return this.length;
     }
 
     isEmpty() {
-        return this.stack.isEmpty();
+        return this.size() === 0;
+    }
+
+    isFull() {
+        return this.size() === this.MAX_SIZE;
     }
 
     push(data) {
-        this.stack.insertAtEnd(data);
+        let node = new Node(data);
+        if(!this.isEmpty()) {
+            node.next = this.top;
+        }
+
+        this.top = node;
+        this.length++;
     }
 
     pop() {
-        return this.stack.deleteAtEnd();
+        let node = this.top;
+        this.top = this.top.next;
+        node.next = null;
+        this.length--;
+
+        return node.value;
     }
 
     peek() {
-        return this.stack.tail ? this.stack.tail.data: null;
+        return this.top.value;
     }
 
-    printStack() {
-        this.stack.printList("Stack");
+    print() {
+        console.log("Current Stack --->");
+        if(this.isEmpty()) {
+            console.log("null");
+            return;
+        }
+        let curr = this.top;
+
+        console.log("HEAD");
+        while(curr) {
+            console.log(curr.value);
+            curr = curr.next;
+        }
     }
 }
 
