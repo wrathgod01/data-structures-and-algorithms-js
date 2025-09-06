@@ -1,21 +1,34 @@
 function selectionSort(arr) {
-    const size = arr.length;
+    const n = arr.length;
+    let swaps = 0, passes = 0, comparison = 0;
 
-    for(let i = 0; i < size; i++) {
+    for(let i = 0; i < n; i++) {
         let min = i;
-        for(let j = i+1; j < size; j++) {
-            if(arr[j] < arr[min]) {
+        for(let j = i+1; j < n; j++) {
+            if(arr[min] > arr[j]) {
                 min = j;
             }
+            comparison++;
         }
-
-        [arr[i], arr[min]] = [arr[min], arr[i]]; // swap
-
-        console.log("i =", i, JSON.stringify(arr));
+        
+        if(min !== i) {
+            [arr[i], arr[min]] = [arr[min], arr[i]]; // swap
+            swaps++;
+        }
+        
+        passes++;
+        console.log("i =", i, arr.toString());
     }
-}
 
-selectionSort([12,56,23,34,1,78,5,9,10,3]);
+    console.log("Selection Sort swaps:", swaps);
+    console.log("Selection Sort comparison:", comparison);
+    console.log("Selection Sort passes:", passes);
+
+    return arr;
+}
+let unSortedArray = [12,56,23,34,1,78,5,9,10,3];
+let sortedArray = selectionSort([...unSortedArray]);
+console.log(sortedArray.toString());
 
 // Algorithm: It mainly divides array into 2 parts - sorted(left side) and unsorted(right side), finds min from unsorted and places
 // in sorted portion in each iteration
