@@ -1,4 +1,4 @@
-const DoublyLinkedList = require("./doublylinkedlist")
+import { DoublyLinkedList } from './doublylinkedlist.js';
 
 let list = new DoublyLinkedList();
 

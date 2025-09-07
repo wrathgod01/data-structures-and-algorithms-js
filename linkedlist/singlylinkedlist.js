@@ -5,7 +5,7 @@ class ListNode {
     }
 }
 
-class SinglyLinkedList {
+export class SinglyLinkedList {
     constructor() {
         this.head = null;
         this.tail = null;
@@ -199,5 +199,3 @@ class SinglyLinkedList {
         console.log("Size:", this.size());
     }
 }
-
-module.exports = SinglyLinkedList;

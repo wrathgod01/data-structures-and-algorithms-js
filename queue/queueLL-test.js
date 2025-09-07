@@ -1,4 +1,4 @@
-const QueueLinkedList = require("./queuelinkedlist");
+import { QueueLinkedList } from './queue.js';
 
 let queue = new QueueLinkedList(100);
 console.log(queue.isEmpty());

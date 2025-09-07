@@ -6,7 +6,7 @@ class ListNode {
     }
 }
 
-class DoublyLinkedList {
+export class DoublyLinkedList {
     constructor() {
         this.head = null;
         this.tail = null;
@@ -210,5 +210,3 @@ class DoublyLinkedList {
         console.log("Size: ", this.size());
     }
 }
-
-module.exports = DoublyLinkedList;

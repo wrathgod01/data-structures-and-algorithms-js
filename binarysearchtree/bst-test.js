@@ -1,4 +1,4 @@
-const BinarySearchTree = require("./binarysearchtree");
+import { BinarySearchTree } from './binarysearchtree.js';
 
 let bst = new BinarySearchTree();
 console.log(bst.search(20));

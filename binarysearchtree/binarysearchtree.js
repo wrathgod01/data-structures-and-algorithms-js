@@ -1,4 +1,4 @@
-class Node {
+class ListNode {
     constructor(value) {
         this.value = value;
         this.left = null;
@@ -6,13 +6,13 @@ class Node {
     }
 }
 
-class BinarySearchTree {
+export class BinarySearchTree {
     constructor() {
         this.root = null;
     }
 
     insert(value) {
-        let node = new Node(value);
+        let node = new ListNode(value);
 
         if(this.root == null) {
             this.root = node;
@@ -76,5 +76,3 @@ class BinarySearchTree {
         return -1;
     }
 }
-
-module.exports = BinarySearchTree;
