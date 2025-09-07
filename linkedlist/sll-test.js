@@ -36,5 +36,5 @@ list.print();
 
 console.log(list.search(34));
 console.log(list.search(35));
-console.log(list.removeValue(35));
+console.log(list.removeValue(45));
 list.print();

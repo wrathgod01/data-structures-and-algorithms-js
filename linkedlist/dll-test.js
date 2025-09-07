@@ -11,7 +11,7 @@ console.log(list.valueAt(3));
 console.log(list.search(30));
 list.print();
 
-console.log(list.pop());;
+console.log(list.pop());
 list.print();
 
 list.unshift(45);
@@ -27,6 +27,6 @@ list.delete(2);
 list.print();
 list.print("backward");
 
-console.log(list.removeVal(20));;
+console.log(list.removeVal(20));
 list.print();
 

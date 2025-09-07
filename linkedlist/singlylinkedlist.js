@@ -1,4 +1,4 @@
-class Node {
+class ListNode {
     constructor(data) {
         this.data = data;
         this.next = null;
@@ -17,11 +17,11 @@ class SinglyLinkedList {
     }
 
     isEmpty() {
-        return this.size() === 0;
+        return this.length === 0;
     }
 
     push(data) {
-        let node = new Node(data);
+        let node = new ListNode(data);
         
         if(this.isEmpty()) {
             this.head = node;
@@ -37,28 +37,25 @@ class SinglyLinkedList {
 
     pop() {
         if(this.isEmpty()) {
-            return undefined;
+            return null;
         }
         
         let node = this.tail;
-        let curr = this.head;
-        let prev = this.head;
-
-        while(curr.next) {
-            prev = curr;
-            curr = curr.next;
-        }
-        
-        this.tail = prev;
-        this.tail.next = null;
-
-        if(this.size() === 1) {
+        if(this.length === 1) {
             this.head = null;
             this.tail = null;
-        }
+        } else {
+            let prev = null, curr = this.head;
+            while(curr !== node) {
+                prev = curr;
+                curr = curr.next;
+            }
 
-        this.length--;
+            prev.next = null;
+            this.tail = prev;
+        }
         
+        this.length--;
         return node.data;
     }
 
@@ -71,7 +68,7 @@ class SinglyLinkedList {
         this.head = this.head.next;
         node.next = null;
 
-        if(this.size() === 1) {
+        if(this.length === 1) {
             this.tail = null;
         }
 
@@ -80,7 +77,7 @@ class SinglyLinkedList {
     }
 
     unshift(data) {
-        let node = new Node(data);
+        let node = new ListNode(data);
         if(this.isEmpty()) {
             this.tail = node;
         }
@@ -91,8 +88,8 @@ class SinglyLinkedList {
     }
     
     valueAt(index) {
-        if(index >= this.size()) {
-            return undefined;
+        if(index >= this.length) {
+            return null;
         }
 
         let curr = this.head;
@@ -105,7 +102,7 @@ class SinglyLinkedList {
     }
 
     insert(data, index) {
-        if((index+1) > this.size()) {
+        if(index > this.length) {
             console.log("Invalid insert position passed", index);
             return;
         }
@@ -115,7 +112,7 @@ class SinglyLinkedList {
             return;
         }
 
-        if(index == this.size()) {
+        if(index == this.length) {
             this.push(data);
             return;
         }
@@ -125,27 +122,23 @@ class SinglyLinkedList {
             curr = curr.next;
         }
 
-        let node = new Node(data);
+        let node = new ListNode(data);
         node.next = curr.next;
         curr.next = node;
         this.length++;
     }
 
     delete(index) {
-        if(index > this.size()) {
+        if(index >= this.length) {
             console.log("Invalid delete position passed", index);
-            return;
-        }
-
-        if(this.isEmpty()) {
-            return undefined;
+            return null;
         }
 
         if(index == 0) {
             return this.shift();
         }
 
-        if(index == this.size()-1) {
+        if(index == this.length - 1) {
             return this.pop();
         }
 
@@ -164,7 +157,7 @@ class SinglyLinkedList {
 
     removeValue(data) {
         if(this.isEmpty()) {
-            return undefined;
+            return null;
         }
 
         let index = this.search(data);
@@ -203,7 +196,7 @@ class SinglyLinkedList {
         list += "null";
 
         console.log(list);
-        console.log("Size: ", this.size());
+        console.log("Size:", this.size());
     }
 }
 

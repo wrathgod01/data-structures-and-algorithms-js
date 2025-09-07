@@ -1,4 +1,4 @@
-class Node {
+class ListNode {
     constructor(data) {
         this.data = data;
         this.prev = null;
@@ -18,11 +18,11 @@ class DoublyLinkedList {
     }
 
     isEmpty() {
-        return this.size() === 0;
+        return this.length === 0;
     }
 
     push(data) {
-        let node = new Node(data);
+        let node = new ListNode(data);
 
         if(this.isEmpty()) {
             this.head = node;
@@ -38,7 +38,7 @@ class DoublyLinkedList {
 
     pop() {
         if(this.isEmpty()) {
-            return undefined;
+            return null;
         }
 
         let node = this.tail;
@@ -69,7 +69,7 @@ class DoublyLinkedList {
     }
 
     unshift(data) {
-        let node = new Node(data);
+        let node = new ListNode(data);
         if(this.isEmpty()) {
             this.tail = node;
         }
@@ -83,8 +83,8 @@ class DoublyLinkedList {
     }
 
     valueAt(index) {
-        if(index >= this.size()) {
-            return undefined;
+        if(index >= this.length) {
+            return null;
         }
 
         let curr = this.head;
@@ -111,7 +111,7 @@ class DoublyLinkedList {
     }
 
     insert(data, index) {
-        if(index > this.size()) {
+        if(index > this.length) {
             console.log("Invalid insert index passed", index);
             return;
         }
@@ -131,7 +131,7 @@ class DoublyLinkedList {
             curr = curr.next;
         }
 
-        let node = new Node(data);
+        let node = new ListNode(data);
         node.next = curr.next;
         node.prev = curr;
         curr.next.prev = node;
@@ -140,16 +140,16 @@ class DoublyLinkedList {
     }
 
     delete(index) {
-        if(index > this.size()) {
+        if(index >= this.length) {
             console.log("Invalid delete index passed", index);
-            return;
+            return null;
         }
 
         if(index == 0) {
             return this.shift();
         }
 
-        if(index == this.size()) {
+        if(index == this.length - 1) {
             return this.pop();
         }
 
@@ -172,7 +172,7 @@ class DoublyLinkedList {
         let index = this.search(data);
         if(index === -1) {
             console.log("No such value exists");
-            return undefined;
+            return null;
         }
 
         return this.delete(index);
