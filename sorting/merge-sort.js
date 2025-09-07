@@ -22,27 +22,29 @@ function merge(arr, start, mid, end) {
     }
 
     // copying temp arr contents to original array
-    let str = "";
     for(let i = start; i <= end; i++) {
         arr[i] = temp[i - start];
-        str += (arr[i] + " ");
     }
-    console.log("Sort and Merge Step:", str);
+    console.log("Sort and Merge Step:", arr.slice(start, end+1).toString());
+
+    return arr;
 }
 
 function mergeSort(arr, start, end) {
     if(start >= end) return;
 
-    let mid = Math.floor((start + end) / 2);
+    let mid = start + Math.floor((end - start) / 2);
     mergeSort(arr, start, mid);
+    console.log("Split:", arr.slice(start, mid+1));
     mergeSort(arr, mid+1, end);
-    merge(arr, start, mid, end);
+    console.log("Split:", arr.slice(mid+1, end+1));
+    return merge(arr, start, mid, end);
 }
 
-let arr = [12,56,23,34,1,78,5,9,10,3];
-console.log("Original Array: ", JSON.stringify(arr));
-mergeSort(arr, 0, arr.length-1);
-console.log("Final Sorted Array: ", JSON.stringify(arr));
+let unsortedArray = [12,56,23,34,1,78,5,9,10,3];
+console.log("Original Array: ", JSON.stringify(unsortedArray));
+let sortedArray = mergeSort([...unsortedArray], 0, unsortedArray.length-1);
+console.log("Final Sorted Array: ", JSON.stringify(sortedArray));
 
 // Algorithm: It mainly divides array into 2 parts - left side and right side recursively (divide and conquer), 
 // and then merges these fragments one by one
