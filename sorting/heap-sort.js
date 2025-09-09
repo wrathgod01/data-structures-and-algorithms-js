@@ -19,10 +19,36 @@ function heapSort(arr) {
         }
     }
 
+    function heapifyDownIterative(size, i) {
+        let l = 2 * i + 1;
+        
+        while(l < size) {
+            let r = 2 * i + 2;
+            let largest = i;
+
+            if(arr[l] > arr[largest]) {
+                largest = l;
+            }
+
+            if(r < size && arr[r] > arr[largest]) {
+                largest = r;
+            }
+
+            if(largest === i) {
+                return;    
+            }
+
+            [arr[i], arr[largest]] = [arr[largest], arr[i]];
+            i = largest;
+            l = 2 * i + 1;
+        }
+    }
+
     // step 1: start heapifying from last non-leaf node to create MaxHeap
     const firstParentIdx = Math.floor(n / 2) - 1;
     for(let i = firstParentIdx; i >= 0; i--) {
-        heapifyDown(n, i);
+        // heapifyDown(n, i);
+        heapifyDownIterative(n, i);
     }
     
     console.log("Max Heap:", JSON.stringify(arr));
@@ -32,7 +58,8 @@ function heapSort(arr) {
         // swap as max is at idx = 0
         [arr[0], arr[i]] = [arr[i], arr[0]];
 
-        heapifyDown(i, 0);
+        // heapifyDown(i, 0);
+        heapifyDownIterative(i, 0);
         console.log("i =", i, arr.toString());
     }
 
