@@ -1,4 +1,4 @@
-class ListNode {
+class TreeNode {
     constructor(value) {
         this.value = value;
         this.left = null;
@@ -12,7 +12,7 @@ export class BinarySearchTree {
     }
 
     insert(value) {
-        let node = new ListNode(value);
+        let node = new TreeNode(value);
 
         if(this.root == null) {
             this.root = node;
@@ -28,30 +28,110 @@ export class BinarySearchTree {
             }
 
             if(node.value < curr.value) {
-                if(curr.left !== null) {
-                    curr = curr.left;
-                    continue;
+                if(curr.left === null) {
+                    curr.left = node;
+                    break;
                 }
-
-                curr.left = node;
-                break;
-            }
-
-            if(node.value > curr.value) {
-                if(curr.right !== null) {
-                    curr = curr.right;
-                    continue;
+                
+                curr = curr.left;
+            } else if(node.value > curr.value) {
+                if(curr.right === null) {
+                    curr.right = node;
+                    break;
                 }
-
-                curr.right = node;
-                break;
+                
+                curr = curr.right;
             }
         }
+    }
+
+    delete(value) {
+        let deleteHelper = (currentNode, value) => {
+            if(currentNode === null) {
+                return null;
+            }
+
+            if(value < currentNode.value) {
+                currentNode.left = deleteHelper(currentNode.left, value);
+            } else if(value > currentNode.value) {
+                currentNode.right = deleteHelper(currentNode.right, value);
+            } else {
+
+                // 1. Node is a leaf node
+                if(currentNode.left === null && currentNode.right === null) {
+                    return null;
+                }
+
+                // 2. Node has one child
+                if(currentNode.left === null) {
+                    return currentNode.right;
+                }
+
+                if(currentNode.right === null) {
+                    return currentNode.left;
+                }
+
+                // 3. Node has 2 children
+                // 3.1 Find inorder successor - min value in right subtree
+                let findMinValueNode = (currentNode) => {
+                    while(currentNode.left !== null) {
+                        currentNode = currentNode.left;
+                    }
+
+                    return currentNode;
+                }
+
+                let successor = findMinValueNode(currentNode.right);
+                // 3.2 Set value of current node to inorder successor value
+                currentNode.value = successor.value;
+                // 3.3 Remove the successor node in right subtree of currentNode
+                currentNode.right = deleteHelper(currentNode.right, successor.value);
+            }
+            return currentNode;
+        }
+
+        this.root = deleteHelper(this.root, value);
     }
 
     // only for quick glance
     print() {
         return this.root;
+    }
+
+    inorderTraversal(currentNode = this.root, res = []) {
+        if(currentNode === null) {
+            return;
+        }
+
+        this.inorderTraversal(currentNode.left, res);
+        res.push(currentNode.value);
+        this.inorderTraversal(currentNode.right, res);
+
+        return res;
+    }
+
+    preorderTraversal(currentNode = this.root, res = []) {
+        if(currentNode === null) {
+            return null;
+        }
+
+        res.push(currentNode.value);
+        this.preorderTraversal(currentNode.left, res);
+        this.preorderTraversal(currentNode.right, res);
+
+        return res;
+    }
+
+    postorderTraversal(currentNode = this.root, res = []) {
+        if(currentNode === null) {
+            return;
+        }
+
+        this.postorderTraversal(currentNode.left, res);
+        this.postorderTraversal(currentNode.right, res);
+        res.push(currentNode.value);
+    
+        return res;
     }
 
     search(value) {

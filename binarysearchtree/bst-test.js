@@ -16,3 +16,9 @@ console.log("30: ", bst.search(30));
 console.log("90: ", bst.search(90));
 console.log("50: ", bst.search(50));
 console.log("70: ", bst.search(70));
+
+bst.delete(30);
+console.log(bst.print());
+console.log("Inorder Traversal:", bst.inorderTraversal());
+console.log("Preorder Traversal:", bst.preorderTraversal());
+console.log("Postorder Traversal:", bst.postorderTraversal());
